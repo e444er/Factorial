@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.math.BigInteger
 
 class MainViewModel : ViewModel() {
 
@@ -22,7 +25,18 @@ class MainViewModel : ViewModel() {
             val number = value.toLong()
 
             delay(1000)
-            _state.value = Result(number.toString())
+            val result = factorial(number)
+            _state.value = Factorial(result)
+        }
+    }
+
+    private suspend fun factorial(number: Long): String {
+        return withContext(Dispatchers.IO) {
+            var result = BigInteger.ONE
+            for (i in 1..number) {
+                result = result.multiply(BigInteger.valueOf(i))
+            }
+            result.toString()
         }
     }
 }

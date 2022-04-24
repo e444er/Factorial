@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                     binding.progressBarLoading.isVisible = true
                     binding.buttonCalculate.isEnabled = false
                 }
-                is Result -> {
+                is Factorial -> {
                     binding.textView.text = it.factorial
                 }
             }
