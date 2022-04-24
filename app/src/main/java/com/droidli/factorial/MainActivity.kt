@@ -24,23 +24,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.progress.observe(this) {
-            if (it) {
+        viewModel.state.observe(this) {
+            if (it.isError) {
+                Toast.makeText(
+                    this, "You did not entered value",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+            if (it.isInProgress) {
                 binding.progressBarLoading.isVisible = true
                 binding.buttonCalculate.isEnabled = false
             } else {
                 binding.progressBarLoading.isVisible = false
                 binding.buttonCalculate.isEnabled = true
             }
-        }
-        viewModel.error.observe(this) {
-            if (it) {
-                Toast.makeText(this, "You did not entered value", Toast.LENGTH_SHORT).show()
-
-            }
-        }
-        viewModel.factorial.observe(this) {
-            binding.textView.text = it
+            binding.textView.text = it.factorial
         }
     }
 }
